@@ -14,23 +14,35 @@
 - [x] **Beslut: Välj databas (PostgreSQL/MySQL/H2)**
 - [x] **Beslut: Bekräfta frontend-ramverk (React föreslaget)**
 
-### 🔄 Fas 1: Grundläggande Setup
+### ✅ Fas 1: Grundläggande Setup
 - [x] Setup av backend-projekt (Spring Boot)
 - [x] Setup av frontend-projekt (React)
 - [x] Konfigurera databaskoppling
 - [x] Setup av grundläggande projektstruktur
-- [ ] Git repository setup
-- [ ] **BACKUP-PUNKT 1**
+- [x] Git repository setup
+- [x] **BACKUP-PUNKT 1**
 
-### ⬜ Fas 2: Användarautentisering & Säkerhet
-- [ ] Database schema för Users
-- [ ] Spring Security konfiguration
-- [ ] JWT token implementation
-- [ ] Registrera användare (backend + frontend)
-- [ ] Login/Logout (backend + frontend)
-- [ ] Protected routes i frontend
+### ✅ Fas 2A: Användarautentisering - Backend
+- [x] Database schema för Users (User entity, Role enum)
+- [x] Spring Security konfiguration (SecurityConfig)
+- [x] JWT token implementation (JwtUtil, JwtRequestFilter)
+- [x] UserDetailsService implementation
+- [x] Registrera användare endpoint (POST /api/auth/register)
+- [x] Login endpoint (POST /api/auth/login)
+- [x] Skyddad endpoint för test (GET /api/user/me)
+- [x] Testa autentisering med curl
+- [x] **BACKUP-PUNKT 2A**
+
+### ⬜ Fas 2B: Användarautentisering - Frontend
+- [ ] AuthContext för global state
+- [ ] Login-formulär komponent
+- [ ] Registrerings-formulär komponent
+- [ ] Token management (localStorage)
+- [ ] Axios interceptor för JWT
+- [ ] Protected routes i React Router
+- [ ] Logout-funktionalitet
 - [ ] Testa autentisering end-to-end
-- [ ] **BACKUP-PUNKT 2**
+- [ ] **BACKUP-PUNKT 2B**
 
 ### ⬜ Fas 3: Portfolio Management (Grundläggande)
 - [ ] Database schema: DigitalAssets, Portfolios, PortfolioItems
