@@ -18,7 +18,7 @@ public class HealthController {
         Map<String, Object> response = new HashMap<>();
         response.put("status", "UP");
         response.put("timestamp", LocalDateTime.now());
-        response.put("service", "Crypto Portfolio Backend");
+        response.put("service", "TradingBots Backend");
         response.put("version", "0.0.1-SNAPSHOT");
         return ResponseEntity.ok(response);
     }

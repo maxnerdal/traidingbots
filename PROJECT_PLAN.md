@@ -1,6 +1,6 @@
 # Crypto Portfolio - Projektplan & Checklista
 **Skapad:** 26 januari 2026  
-**Senast uppdaterad:** 26 januari 2026
+**Senast uppdaterad:** 28 januari 2026
 
 ---
 
@@ -33,16 +33,18 @@
 - [x] Testa autentisering med curl
 - [x] **BACKUP-PUNKT 2A**
 
-### ⬜ Fas 2B: Användarautentisering - Frontend
-- [ ] AuthContext för global state
-- [ ] Login-formulär komponent
-- [ ] Registrerings-formulär komponent
-- [ ] Token management (localStorage)
-- [ ] Axios interceptor för JWT
-- [ ] Protected routes i React Router
-- [ ] Logout-funktionalitet
-- [ ] Testa autentisering end-to-end
-- [ ] **BACKUP-PUNKT 2B**
+### ✅ Fas 2B: Användarautentisering - Frontend
+- [x] AuthContext för global state
+- [x] Login-formulär komponent
+- [x] Registrerings-formulär komponent
+- [x] Token management (localStorage)
+- [x] Axios interceptor för JWT
+- [x] Protected routes i React Router
+- [x] Logout-funktionalitet
+- [x] Testa autentisering end-to-end
+- [x] Responsiv design (mobil-anpassad)
+- [x] Uppdatera branding till "TradingBots"
+- [x] **BACKUP-PUNKT 2B**
 
 ### ⬜ Fas 3: Portfolio Management (Grundläggande)
 - [ ] Database schema: DigitalAssets, Portfolios, PortfolioItems
