@@ -1,4 +1,4 @@
-package com.cryptoportfolio.model;
+package com.cryptoportfolio.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;

@@ -1,4 +1,4 @@
-package com.cryptoportfolio.model;
+package com.cryptoportfolio.entity;
 
 /**
  * Role enum - definierar användarroller i systemet

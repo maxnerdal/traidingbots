@@ -1,11 +1,14 @@
 package com.cryptoportfolio.security;
 
+import com.cryptoportfolio.entity.User;
+import com.cryptoportfolio.repository.UserRepository;
 import com.cryptoportfolio.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 /**
  * JwtRequestFilter - Interceptar alla HTTP requests och validerar JWT token
@@ -28,10 +32,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     
-    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
     
     @Override
@@ -57,9 +63,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             
             // Validera token
             if (jwtUtil.validateToken(jwt, userDetails)) {
+                // Hämta den faktiska User entity från databasen
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                
+                // Skapa authentication med User entity som principal
                 UsernamePasswordAuthenticationToken authToken = 
                         new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
+                                user, // Använd User entity istället för UserDetails
+                                null, 
+                                user.getRoles().stream()
+                                    .map(role -> new SimpleGrantedAuthority(role.name()))
+                                    .collect(Collectors.toList()));
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 
                 // Sätt authentication i Security Context

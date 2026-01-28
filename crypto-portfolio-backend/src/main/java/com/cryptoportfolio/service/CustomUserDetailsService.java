@@ -1,6 +1,6 @@
 package com.cryptoportfolio.service;
 
-import com.cryptoportfolio.model.User;
+import com.cryptoportfolio.entity.User;
 import com.cryptoportfolio.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
