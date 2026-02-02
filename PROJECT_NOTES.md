@@ -25,10 +25,10 @@ Bygga ett crypto portfolio management system med Java Spring Boot backend och fr
 ## Projektstruktur
 ```
 /Users/maxnerdal/Documents/E-hälsomyndigheten/
-├── crypto-portfolio-backend/
+├── tradingbots-backend/
 │   └── src/main/java/com/cryptoportfolio/
 │   └── src/main/resources/
-└── crypto-portfolio-frontend/
+└── tradingbots-frontend/
 ```
 
 ## Referensprojekt
@@ -104,7 +104,7 @@ Bygga ett crypto portfolio management system med Java Spring Boot backend och fr
 ### Backend
 - `pom.xml` - Maven konfiguration
 - `application.properties` - Spring Boot konfiguration
-- `CryptoPortfolioApplication.java` - Main class
+- `TradingBotsApplication.java` - Main class
 - `HealthController.java` - Health check endpoint
 - `.gitignore` - Git ignore-regler
 - `README.md` - Backend-dokumentation
@@ -126,10 +126,10 @@ Bygga ett crypto portfolio management system med Java Spring Boot backend och fr
 ### Starta Allt
 ```bash
 # Terminal 1 - Backend
-cd crypto-portfolio-backend && mvn spring-boot:run
+cd tradingbots-backend && mvn spring-boot:run
 
 # Terminal 2 - Frontend (när vi är redo)
-cd crypto-portfolio-frontend && npm run dev
+cd tradingbots-frontend && npm run dev
 
 # PostgreSQL status
 brew services list

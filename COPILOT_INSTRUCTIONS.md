@@ -43,13 +43,13 @@ E-hälsomyndigheten/
 ├── PROJECT_NOTES.md                  ← Anteckningar
 ├── PROJEKTSAMMANFATTNING.md          ← Översikt
 │
-├── crypto-portfolio-backend/         ← Spring Boot backend
+├── tradingbots-backend/         ← Spring Boot backend
 │   ├── src/main/java/com/cryptoportfolio/
 │   ├── src/main/resources/
 │   ├── pom.xml
 │   └── .gitignore
 │
-└── crypto-portfolio-frontend/        ← React frontend
+└── tradingbots-frontend/        ← React frontend
     ├── src/
     ├── package.json
     └── .gitignore
@@ -65,6 +65,7 @@ E-hälsomyndigheten/
 - **PostgreSQL 14** (native installation, inte Docker)
 - **Maven** för build management
 - **Embedded Tomcat** (port 8080)
+- **⚠️ INGEN Lombok** - Alla klasser använder manuella getters/setters (Lombok annotation processing gav problem)
 
 ### Frontend
 - **React 18+**
@@ -85,7 +86,7 @@ E-hälsomyndigheten/
 
 ### Backend
 ```bash
-cd crypto-portfolio-backend
+cd tradingbots-backend
 mvn clean install          # Bygg projekt
 mvn spring-boot:run        # Starta backend (port 8080)
 mvn test                   # Kör tester
@@ -93,7 +94,7 @@ mvn test                   # Kör tester
 
 ### Frontend
 ```bash
-cd crypto-portfolio-frontend
+cd tradingbots-frontend
 npm install                # Installera dependencies
 npm run dev                # Starta dev server (port 5173)
 npm run build              # Bygg för production
@@ -178,6 +179,8 @@ brew services stop postgresql@14
 - ❌ Ignorera .gitignore filer som redan finns
 - ❌ Använda Docker (vi kör native installations)
 - ❌ Glömma att uppdatera IMPLEMENTATION_LOG.md efter implementationer
+- ❌ **ANVÄND LOMBOK** - Alla klasser ska ha manuella getters/setters och constructors
+- ❌ Använd double/float för finansiella värden - använd alltid BigDecimal
 
 ### ALLTID:
 - ✅ Använd tools för att utforska innan åtgärd
@@ -239,11 +242,15 @@ Varje förklaring i IMPLEMENTATION_LOG.md ska innehålla:
 ## 📝 Filnamn och konventioner
 
 ### Backend (Java):
-- **Entities:** `User.java`, `Portfolio.java` (singular, PascalCase)
+- **Package struktur:** `com.tradingbots.entity`, `com.tradingbots.repository`, `com.tradingbots.service`, `com.tradingbots.controller`, `com.tradingbots.dto`, `com.tradingbots.security`
+- **Entities:** `User.java`, `Portfolio.java`, `DigitalAsset.java` (singular, PascalCase)
+  - ⚠️ **INGEN Lombok** - Manuella constructors (no-arg + all-args), getters och setters i ALLA klasser
+  - Constructor injection: Manuella constructors istället för @RequiredArgsConstructor
 - **Repositories:** `UserRepository.java` (PascalCase + Repository)
 - **Services:** `AuthService.java` (PascalCase + Service)
 - **Controllers:** `AuthController.java` (PascalCase + Controller)
 - **DTOs:** `LoginRequest.java`, `AuthResponse.java` (PascalCase + Request/Response)
+  - ⚠️ **INGEN Lombok** - Manuella getters/setters även i DTOs
 - **Config:** `SecurityConfig.java` (PascalCase + Config)
 - **Utils:** `JwtUtil.java` (PascalCase + Util)
 
@@ -291,12 +298,167 @@ Varje förklaring i IMPLEMENTATION_LOG.md ska innehålla:
 - PostgreSQL konfigurerad
 - Health endpoint fungerar
 
-**Nästa: Fas 2 - Authentication**
-- User entity
-- Spring Security
+**Fas 2: ✅ KLAR**
+- User entity och authentication
+- Spring Security konfiguration
 - JWT implementation
-- Login/Register
+- Login/Register endpoints
+
+**Fas 3 Backend: ✅ KLAR**
+- DigitalAsset, Portfolio, PortfolioItem entities
+- Portfolio management endpoints
+- Ownership validation i service layer
+- KRITISK FIX: JwtRequestFilter sätter User entity som principal
+
+**Nästa: Fas 3 Frontend**
+- Portfolio dashboard
+- Skapa/hantera portfolios
+- Lägg till assets
+- Visa innehav med priser
 
 ---
 
 **Kom ihåg:** När i tvivel, UTFORSKA FÖRST! 🔍
+
+---
+
+## ⚠️ Kritiska Lärdomar från Fas 3
+
+### 1. Lombok Problem
+**Problem:** Maven compilation failures med Lombok annotations  
+**Lösning:** ALDRIG använd Lombok - skriv alltid manuella getters/setters
+
+**Template för entity:**
+```java
+@Entity
+@Table(name = "example")
+public class Example {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    private String name;
+    
+    // No-arg constructor
+    public Example() {}
+    
+    // All-args constructor
+    public Example(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    
+    // Manual getters and setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+```
+
+### 2. @AuthenticationPrincipal NullPointerException Fix
+**Problem:** `@AuthenticationPrincipal User user` returnerade null i controllers  
+**Root Cause:** JwtRequestFilter satte UserDetails som principal, inte User entity
+
+**KRITISK FIX i JwtRequestFilter:**
+```java
+@Component
+public class JwtRequestFilter extends OncePerRequestFilter {
+    private final UserRepository userRepository;  // MÅSTE INJICERAS!
+    
+    @Override
+    protected void doFilterInternal(...) {
+        if (jwtUtil.validateToken(jwt, userDetails)) {
+            // Hämta User entity från databas
+            User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            // Sätt User entity som principal (INTE UserDetails!)
+            UsernamePasswordAuthenticationToken authToken = 
+                new UsernamePasswordAuthenticationToken(
+                    user,  // User entity här!
+                    null,
+                    user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
+                        .collect(Collectors.toList()));
+            
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+    }
+}
+```
+
+### 3. BigDecimal för Finansiella Värden
+**Regel:** ALDRIG använd double eller float för pengar/quantities
+
+```java
+// RÄTT:
+@Column(nullable = false, precision = 20, scale = 8)
+private BigDecimal quantity;
+
+@Column(name = "average_buy_price", precision = 20, scale = 2)
+private BigDecimal averageBuyPrice;
+
+// FEL:
+private double quantity;  // ❌ Precision errors!
+```
+
+### 4. Ownership Validation i Service Layer
+**Regel:** Validera ALLTID att användaren äger resursen
+
+```java
+private Portfolio getPortfolioById(Long id, Long userId) {
+    Portfolio portfolio = portfolioRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Portfolio not found"));
+    
+    // KRITISK säkerhetskontroll
+    if (!portfolio.getUser().getId().equals(userId)) {
+        throw new RuntimeException("Unauthorized access to portfolio");
+    }
+    
+    return portfolio;
+}
+```
+
+### 5. JWT Token Management
+**Problem:** Token går ut efter 24 timmar  
+**Lösning:** 
+```bash
+# När token slutar fungera (403 Forbidden):
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@test.com","password":"password"}'
+
+# Spara ny token
+export TOKEN="nya_token_här"
+```
+
+### 6. Två-Terminal Setup för Testing
+**Backend terminal:**
+```bash
+cd tradingbots-backend
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17
+$JAVA_HOME/bin/java -jar target/tradingbots-backend-0.0.1-SNAPSHOT.jar
+# Kör i foreground för att se logs
+```
+
+**Test terminal:**
+```bash
+# Sätt token
+export TOKEN="din_jwt_token"
+
+# Testa endpoints
+curl http://localhost:8080/api/portfolios -H "Authorization: Bearer $TOKEN"
+```
+
+### 7. Cascade Operations och Unique Constraints
+```java
+// Portfolio → PortfolioItem
+@OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<PortfolioItem> items = new ArrayList<>();
+// När portfolio raderas, raderas alla items automatiskt
+
+// Förhindra duplicates på databas-nivå
+@Table(name = "portfolio_items",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"portfolio_id", "digital_asset_id"}))
+// En portfolio kan bara ha EN position av varje asset
+```

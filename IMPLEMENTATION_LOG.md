@@ -319,13 +319,13 @@ brew services start postgresql@14
 
 **Katalogstruktur:**
 ```
-crypto-portfolio-backend/
+tradingbots-backend/
 ├── pom.xml                          # Maven konfiguration och dependencies
 ├── src/
 │   └── main/
 │       ├── java/
 │       │   └── com/cryptoportfolio/
-│       │       └── CryptoPortfolioApplication.java  # Main klass
+│       │       └── TradingBotsApplication.java  # Main klass
 │       └── resources/
 │           └── application.properties               # Applikationskonfiguration
 ```
@@ -339,7 +339,7 @@ Project Object Model (POM) är Maven's konfigurationsfil. Den är hjärtat av et
 ```xml
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.cryptoportfolio</groupId>      <!-- Organization/company -->
+  <groupId>com.tradingbots</groupId>      <!-- Organization/company -->
   <artifactId>crypto-backend</artifactId>     <!-- Project name -->
   <version>0.0.1-SNAPSHOT</version>           <!-- Version -->
   <packaging>jar</packaging>                  <!-- Output format -->
@@ -746,7 +746,7 @@ jwt.secret=your-secret-key-change-this-in-production-make-it-at-least-256-bits
 jwt.expiration=86400000
 
 # Logging
-logging.level.com.cryptoportfolio=DEBUG
+logging.level.com.tradingbots=DEBUG
 logging.level.org.springframework.security=DEBUG
 ```
 
@@ -763,14 +763,14 @@ logging.level.org.springframework.security=DEBUG
 
 #### 1.4.4 Main Application Class
 
-**Fil:** `CryptoPortfolioApplication.java`
+**Fil:** `TradingBotsApplication.java`
 
 ```java
 @SpringBootApplication
 @EnableScheduling
-public class CryptoPortfolioApplication {
+public class TradingBotsApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CryptoPortfolioApplication.class, args);
+        SpringApplication.run(TradingBotsApplication.class, args);
     }
 }
 ```
@@ -807,7 +807,7 @@ public class HealthController {
 
 **Bygga projektet:**
 ```bash
-cd crypto-portfolio-backend
+cd tradingbots-backend
 mvn clean install
 ```
 
@@ -930,7 +930,7 @@ Använder Rollup för optimerad bundling:
 
 **Kommando:**
 ```bash
-cd crypto-portfolio-frontend
+cd tradingbots-frontend
 npx create-vite . --template react
 ```
 
@@ -939,7 +939,7 @@ npx create-vite . --template react
 
 **Projektstruktur efter skapande:**
 ```
-crypto-portfolio-frontend/
+tradingbots-frontend/
 ├── package.json           # npm dependencies och scripts
 ├── vite.config.js         # Vite konfiguration
 ├── index.html             # HTML entry point
@@ -1223,7 +1223,7 @@ I Fas 2 kommer vi att implementera:
 ### Backend
 ```bash
 # Starta backend
-cd crypto-portfolio-backend && mvn spring-boot:run
+cd tradingbots-backend && mvn spring-boot:run
 
 # Bygg JAR-fil
 mvn clean package
@@ -1235,7 +1235,7 @@ mvn test
 ### Frontend
 ```bash
 # Starta dev server
-cd crypto-portfolio-frontend && npm run dev
+cd tradingbots-frontend && npm run dev
 
 # Bygga för production
 npm run build
@@ -1275,3 +1275,248 @@ git commit -m "Initial setup - Fas 1 complete"
 ---
 
 **Slutsats Fas 1:** Grundläggande setup är klar. Projektet har en fungerande backend och frontend, och vi är redo att börja implementera affärslogik i Fas 2!
+
+---
+
+## Fas 3: Portfolio Management (Backend)
+
+**Datum:** 28 januari 2026  
+**Status:** ✅ Komplett (Backend)  
+**Git Commit:** BACKUP-PUNKT 3
+
+### Översikt
+
+Fas 3 implementerar komplett portfolio management system där användare kan:
+- Skapa och hantera kryptovalutor (Digital Assets)
+- Skapa flera portfolios
+- Lägga till/uppdatera/ta bort tillgångar i sina portfolios
+- Se sina innehav med quantity och average buy price
+
+### Implementerade Komponenter
+
+#### 1. Entity-klasser (INGEN Lombok)
+
+**Kritiskt designbeslut:** Alla klasser använder manuella getters/setters istället för Lombok eftersom vi hade problem med Lombok annotation processing i Maven.
+
+**Nya filer skapade:**
+- `DigitalAsset.java` - Representerar kryptovalutor (BTC, ETH, etc.)
+- `Portfolio.java` - Användarens samling av digitala tillgångar  
+- `PortfolioItem.java` - Specifika innehav i en portfolio
+
+**Database schema (3 nya tabeller):**
+- `digital_assets`: symbol (unique), name, coingecko_id, timestamps
+- `portfolios`: user_id (FK), name, description, timestamps
+- `portfolio_items`: portfolio_id + digital_asset_id (unique constraint), quantity, average_buy_price, notes
+
+**Viktiga design patterns:**
+- BigDecimal för finansiella värden (quantity: 8 decimaler, prices: 2 decimaler)
+- @PrePersist/@PreUpdate för automatiska timestamps
+- Cascade operations: Portfolio → PortfolioItem (orphanRemoval=true)
+- Eager loading av DigitalAsset i PortfolioItem (nästan alltid behövs)
+- Unique constraint förhindrar dubbletter: en asset per portfolio
+
+#### 2. Repositories
+
+Skapade 3 nya repositories:
+- `DigitalAssetRepository`: findBySymbol(), existsBySymbol()
+- `PortfolioRepository`: findByUserId()
+- `PortfolioItemRepository`: findByPortfolioId(), findByPortfolioIdAndDigitalAssetId()
+
+#### 3. DTOs (Data Transfer Objects)
+
+Alla med manuella getters/setters (NO Lombok):
+- `CreateDigitalAssetRequest` - symbol, name, coingeckoId
+- `CreatePortfolioRequest` - name, description
+- `AddPortfolioItemRequest` - digitalAssetId, quantity, averageBuyPrice, notes
+- `UpdatePortfolioItemRequest` - quantity, averageBuyPrice, notes
+
+#### 4. Services
+
+**DigitalAssetService:**
+- Full CRUD för digitala tillgångar
+- Validering att symbol är unik
+
+**PortfolioService:**
+- CRUD för portfolios och items
+- **KRITISK: Ownership validation** - alla metoder validerar att userId matchar portfolio owner
+- Smart `addPortfolioItem`: uppdaterar befintlig item eller skapar ny
+
+**Constructor Injection Pattern:**
+```java
+public PortfolioService(PortfolioRepository portfolioRepository,
+                       PortfolioItemRepository portfolioItemRepository,
+                       UserRepository userRepository,
+                       DigitalAssetService digitalAssetService) {
+    this.portfolioRepository = portfolioRepository;
+    this.portfolioItemRepository = portfolioItemRepository;
+    this.userRepository = userRepository;
+    this.digitalAssetService = digitalAssetService;
+}
+```
+Ingen @RequiredArgsConstructor - allt manuellt!
+
+#### 5. Controllers
+
+**DigitalAssetController:**
+- `GET /api/assets` - Lista alla assets
+- `GET /api/assets/{id}` - Hämta specifik asset
+- `GET /api/assets/symbol/{symbol}` - Hämta via symbol
+- `POST /api/assets` - Skapa ny asset
+- `DELETE /api/assets/{id}` - Radera asset
+
+**PortfolioController:**
+- `GET /api/portfolios` - Lista användarens portfolios
+- `POST /api/portfolios` - Skapa ny portfolio
+- `GET /api/portfolios/{id}` - Hämta specifik portfolio
+- `PUT /api/portfolios/{id}` - Uppdatera portfolio
+- `DELETE /api/portfolios/{id}` - Radera portfolio
+- `GET /api/portfolios/{id}/items` - Lista portfolio items
+- `POST /api/portfolios/{id}/items` - Lägg till asset
+- `PUT /api/portfolios/{id}/items/{itemId}` - Uppdatera item
+- `DELETE /api/portfolios/{id}/items/{itemId}` - Radera item
+
+Alla endpoints använder `@AuthenticationPrincipal User user` för automatisk user-extraktion från JWT.
+
+#### 6. KRITISK FIX: JwtRequestFilter
+
+**Problem:** `@AuthenticationPrincipal User user` returnerade `null` i alla controllers → NullPointerException
+
+**Root Cause:**  
+JwtRequestFilter satte Spring Security's `UserDetails` objekt som principal, men controllers förväntade sig vår custom `User` entity.
+
+**Lösning:**
+Uppdaterade `JwtRequestFilter.java`:
+```java
+@Component
+public class JwtRequestFilter extends OncePerRequestFilter {
+    private final UserRepository userRepository;  // TILLAGT!
+    
+    @Override
+    protected void doFilterInternal(...) {
+        if (jwtUtil.validateToken(jwt, userDetails)) {
+            // NYTT: Hämta faktiska User entity från DB
+            User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+            
+            // NYTT: Sätt User entity som principal (inte UserDetails)
+            UsernamePasswordAuthenticationToken authToken = 
+                new UsernamePasswordAuthenticationToken(
+                    user,  // User entity här istället för userDetails!
+                    null, 
+                    user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.name()))
+                        .collect(Collectors.toList()));
+            
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
+    }
+}
+```
+
+**Resultat:** @AuthenticationPrincipal fungerar nu perfekt i alla controllers!
+
+### Package Migration
+
+Flyttade för konsistens:
+- `User.java`: model → entity package
+- `Role.java`: model → entity package
+
+**Uppdaterade imports i:**
+- AuthService.java
+- CustomUserDetailsService.java  
+- UserRepository.java
+
+### Testning med curl
+
+#### Setup
+```bash
+# 1. Login och få token
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"portfoliotest@test.com","password":"test1234"}'
+
+# 2. Spara token
+export TOKEN="eyJhbGciOiJIUzI1NiJ9..."
+```
+
+#### Testade endpoints
+```bash
+# Skapa digital asset
+curl -X POST http://localhost:8080/api/assets \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"symbol":"BTC","name":"Bitcoin","coingeckoId":"bitcoin"}'
+
+# Skapa portfolio
+curl -X POST http://localhost:8080/api/portfolios \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"name":"Min Crypto Portfolio","description":"Mina digitala tillgångar"}'
+
+# Lista portfolios
+curl http://localhost:8080/api/portfolios \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Verifiering i logs:**
+```
+Hibernate: select u1_0.id, u1_0.email... from users where email=?
+Hibernate: select r1_0.user_id, r1_0.role from user_roles where user_id=?
+Hibernate: insert into portfolios (created_at, description, name, updated_at, user_id) values (?, ?, ?, ?, ?)
+```
+
+✅ Alla endpoints fungerar korrekt!
+
+### Build och Deployment
+
+```bash
+# 1. Rebuild med uppdaterad JwtRequestFilter
+cd tradingbots-backend
+mvn clean package -DskipTests
+
+# 2. Starta backend
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17
+$JAVA_HOME/bin/java -jar target/tradingbots-backend-0.0.1-SNAPSHOT.jar
+
+# Backend startade på port 8080
+```
+
+### Git Commit
+
+```bash
+git add -A
+git commit -m "Fas 3: Portfolio Management Backend - BACKUP-PUNKT 3"
+git push origin main
+```
+
+### Lärdomar och Best Practices
+
+1. **Ingen Lombok:** Manuella getters/setters ger full kontroll och enklare debugging. Lombok annotation processing var problematiskt.
+
+2. **BigDecimal för finansiella värden:** ALDRIG använd double/float för pengar. BigDecimal ger exakt precision.
+
+3. **Ownership validation i service layer:** Alla PortfolioService-metoder validerar att `userId` matchar portfolio owner. Kritiskt för säkerhet.
+
+4. **@AuthenticationPrincipal kräver rätt principal-typ:** Om du sätter `UserDetails` i Security Context men försöker få `User` i controller → null. Måste matcha exakt.
+
+5. **Cascade operations:** `orphanRemoval = true` på OneToMany städar upp automatiskt. När Portfolio raderas, raderas alla PortfolioItems.
+
+6. **Unique constraints på databas-nivå:** `@UniqueConstraint(columnNames = {"portfolio_id", "digital_asset_id"})` förhindrar dubbletter även om application logic missar.
+
+7. **FetchType.EAGER vs LAZY:**
+   - EAGER: DigitalAsset i PortfolioItem (vi behöver nästan alltid asset-info)
+   - LAZY: User i Portfolio (vi behöver inte alltid user-info)
+
+8. **Constructor injection utan Lombok:** Skriv manuella constructors istället för @RequiredArgsConstructor. Mer verbose men tydligare dependencies.
+
+9. **JWT token expires:** 24 timmar validity. Om token slutar fungera, logga in igen och få ny token med `export TOKEN="..."`.
+
+### Nästa Steg: Fas 3 Frontend
+
+Nu implementerar vi frontend för portfolio management:
+- Portfolio dashboard med översikt
+- Skapa ny portfolio (modal/form)
+- Lägg till/ta bort assets i portfolio
+- Visa innehav med current price från CoinGecko API
+- Charts för portfolio value över tid (Recharts)
+- Responsive design (mobile-first)
