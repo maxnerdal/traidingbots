@@ -20,7 +20,7 @@ function Login() {
     const result = await login(email, password);
     
     if (result.success) {
-      navigate('/dashboard');
+      navigate('/portfolio');
     } else {
       setError(result.error);
     }

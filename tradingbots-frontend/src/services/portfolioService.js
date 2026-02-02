@@ -32,6 +32,12 @@ export const portfolioService = {
     return response.data;
   },
 
+  // Alias for getAllPortfolios
+  getAll: async () => {
+    const response = await api.get('/portfolios');
+    return response.data;
+  },
+
   // Get specific portfolio by ID
   getPortfolioById: async (id) => {
     const response = await api.get(`/portfolios/${id}`);

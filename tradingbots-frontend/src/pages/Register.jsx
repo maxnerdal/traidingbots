@@ -49,7 +49,7 @@ function Register() {
     );
     
     if (result.success) {
-      navigate('/dashboard');
+      navigate('/portfolio');
     } else {
       setError(result.error);
     }
