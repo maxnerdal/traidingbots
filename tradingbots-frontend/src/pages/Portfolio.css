@@ -201,18 +201,15 @@
 }
 
 .section-time {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 
-.btn-refresh {
-  padding: var(--spacing-xs);
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.section-time svg {
+  color: var(--text-muted);
 }
 
 /* Portfolio Table */

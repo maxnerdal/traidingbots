@@ -7,6 +7,7 @@ import TradingBots from './pages/TradingBots';
 import Portfolio from './pages/Portfolio';
 import AddAssetPage from './pages/AddAssetPage';
 import CreatePortfolioPage from './pages/CreatePortfolioPage';
+import MarketPage from './pages/MarketPage';
 import './App.css';
 
 function App() {
@@ -56,10 +57,7 @@ function App() {
             path="/markets" 
             element={
               <ProtectedRoute>
-                <div style={{ padding: '40px', textAlign: 'center' }}>
-                  <h1>Markets</h1>
-                  <p>Coming soon...</p>
-                </div>
+                <MarketPage />
               </ProtectedRoute>
             } 
           />

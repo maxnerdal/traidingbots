@@ -96,7 +96,10 @@ function Portfolio() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer'}}>traidingbots</span>
+            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'}}>
+              <img src="/logo.png" alt="Logo" style={{height: '32px', objectFit: 'contain'}} />
+              traidingbots
+            </span>
             <span className="breadcrumb-separator">/</span>
             <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
           </div>
@@ -239,13 +242,13 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
               <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
             </svg>
           </button>
-          <span className="section-time">{formatTimeAgo(portfolio.updatedAt)}</span>
-          <button className="btn-refresh">
+          <div className="section-time">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 3a5 5 0 104.546 2.914.5.5 0 01.908-.417A6 6 0 118 2v1z"/>
               <path d="M8 4.466V.534a.25.25 0 01.41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 018 4.466z"/>
             </svg>
-          </button>
+            <span>{formatTimeAgo(portfolio.updatedAt)}</span>
+          </div>
         </div>
       </div>
 
