@@ -73,14 +73,14 @@ function UserAvatar() {
           </div>
           <div className="user-menu-divider"></div>
           <button className="user-menu-item" onClick={() => handleMenuClick('profile')}>
-            Profil
+            Profile
           </button>
           <button className="user-menu-item" onClick={() => handleMenuClick('settings')}>
-            Inställningar
+            Settings
           </button>
           <div className="user-menu-divider"></div>
           <button className="user-menu-item danger" onClick={() => handleMenuClick('logout')}>
-            Logga ut
+            Log Out
           </button>
         </div>
       )}

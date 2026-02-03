@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
 import { portfolioService } from '../services/portfolioService';
-import './Dashboard.css';
+import './Portfolio.css';
 
-function Dashboard() {
+function Portfolio() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [portfolios, setPortfolios] = useState([]);
@@ -48,7 +48,7 @@ function Dashboard() {
   };
 
   const handleDeletePortfolio = async (portfolioId) => {
-    if (!window.confirm('Är du säker på att du vill ta bort denna portfolio?')) {
+    if (!window.confirm('Are you sure you want to delete this portfolio?')) {
       return;
     }
 
@@ -96,9 +96,9 @@ function Dashboard() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand">traidingbots</span>
+            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer'}}>traidingbots</span>
             <span className="breadcrumb-separator">/</span>
-            <span className="breadcrumb-page">portfolio</span>
+            <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
           </div>
         </div>
         <div className="header-right">
@@ -135,12 +135,12 @@ function Dashboard() {
 
         {/* Portfolio Sections */}
         {loading ? (
-          <div className="loading-state">Laddar portfolios...</div>
+          <div className="loading-state">Loading portfolios...</div>
         ) : portfolios.length === 0 ? (
           <div className="empty-state">
-            <p>Inga portfolios än</p>
+            <p>No portfolios yet</p>
             <button onClick={() => navigate('/create-portfolio')} className="btn-create">
-              + Skapa Portfolio
+              + Create Portfolio
             </button>
           </div>
         ) : (
@@ -201,6 +201,23 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
     return num >= 0 ? 'text-positive' : 'text-negative';
   };
 
+  const formatTimeAgo = (timestamp) => {
+    if (!timestamp) return 'Recently';
+    
+    const now = new Date();
+    const updated = new Date(timestamp);
+    const diffMs = now - updated;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
+    if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+    return updated.toLocaleDateString('en-US');
+  };
+
   const items = portfolio.items || [];
 
   return (
@@ -214,15 +231,15 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
         </div>
         <div className="section-actions">
           <button className="btn-add-asset" onClick={onAddAsset}>
-            + Lägg till tillgång
+            + Add Asset
           </button>
-          <button className="btn-delete-portfolio" onClick={() => onDelete(portfolio.id)} title="Ta bort portfolio">
+          <button className="btn-delete-portfolio" onClick={() => onDelete(portfolio.id)} title="Delete portfolio">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
               <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
             </svg>
           </button>
-          <span className="section-time">1 hour ago</span>
+          <span className="section-time">{formatTimeAgo(portfolio.updatedAt)}</span>
           <button className="btn-refresh">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
               <path d="M8 3a5 5 0 104.546 2.914.5.5 0 01.908-.417A6 6 0 118 2v1z"/>
@@ -234,7 +251,7 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
 
       {items.length === 0 ? (
         <div className="empty-portfolio">
-          <p>Inga tillgångar i denna portfolio</p>
+          <p>No assets in this portfolio</p>
         </div>
       ) : (
         <div className="portfolio-table-wrapper">
@@ -293,4 +310,4 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
   );
 }
 
-export default Dashboard;
+export default Portfolio;

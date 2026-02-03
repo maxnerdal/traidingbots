@@ -8,7 +8,7 @@ function ProtectedRoute({ children }) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p>Laddar...</p>
+        <p>Loading...</p>
       </div>
     );
   }

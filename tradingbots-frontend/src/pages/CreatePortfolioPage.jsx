@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { portfolioService } from '../services/portfolioService';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
+import '../styles/SharedFormStyles.css';
 import './CreatePortfolioPage.css';
 
 function CreatePortfolioPage() {
@@ -25,7 +26,7 @@ function CreatePortfolioPage() {
     e.preventDefault();
     
     if (!formData.name.trim()) {
-      setError('Portfolio-namn krävs');
+      setError('Portfolio name is required');
       return;
     }
 
@@ -37,7 +38,7 @@ function CreatePortfolioPage() {
       navigate('/portfolio');
     } catch (err) {
       console.error('Failed to create portfolio:', err);
-      setError(err.response?.data?.message || 'Kunde inte skapa portfolio');
+      setError(err.response?.data?.message || 'Could not create portfolio');
       setLoading(false);
     }
   };
@@ -48,8 +49,11 @@ function CreatePortfolioPage() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand">traidingbots</span> / 
-            <span className="breadcrumb-page">Ny portfolio</span>
+            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer'}}>traidingbots</span>
+            <span className="breadcrumb-separator">/</span>
+            <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
+            <span className="breadcrumb-separator">/</span>
+            <span className="breadcrumb-page">create portfolio</span>
           </div>
         </div>
         <div className="header-right">
@@ -59,8 +63,8 @@ function CreatePortfolioPage() {
 
       <main className="create-portfolio-content">
         <div className="page-title">
-          <h1>Skapa ny portfolio</h1>
-          <p className="page-description">Organisera och spåra dina kryptotillgångar i en ny portfolio</p>
+          <h1>Create New Portfolio</h1>
+          <p className="page-description">Organize and track your crypto assets in a new portfolio</p>
         </div>
 
         <form onSubmit={handleSubmit} className="create-portfolio-form">
@@ -77,12 +81,12 @@ function CreatePortfolioPage() {
           <div className="form-section">
             <div className="section-number">1</div>
             <div className="section-content">
-              <h2>Grundläggande information</h2>
-              <p className="section-description">Ge din portfolio ett namn och beskrivning</p>
+              <h2>Basic Information</h2>
+              <p className="section-description">Give your portfolio a name and description</p>
               
               <div className="form-group">
                 <label htmlFor="name">
-                  Portfolio-namn <span className="required">*</span>
+                  Portfolio Name <span className="required">*</span>
                 </label>
                 <input
                   type="text"
@@ -90,26 +94,26 @@ function CreatePortfolioPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="t.ex. Min Crypto Portfolio"
+                  placeholder="e.g. My Crypto Portfolio"
                   disabled={loading}
                   required
                   autoFocus
                 />
-                <p className="field-hint">Välj ett beskrivande namn för din portfolio</p>
+                <p className="field-hint">Choose a descriptive name for your portfolio</p>
               </div>
 
               <div className="form-group">
-                <label htmlFor="description">Beskrivning</label>
+                <label htmlFor="description">Description</label>
                 <textarea
                   id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  placeholder="Beskriv din portfolio och dess investeringsstrategi..."
+                  placeholder="Describe your portfolio and its investment strategy..."
                   rows="4"
                   disabled={loading}
                 />
-                <p className="field-hint">Valfritt: Lägg till anteckningar om denna portfolio</p>
+                <p className="field-hint">Optional: Add notes about this portfolio</p>
               </div>
             </div>
           </div>
@@ -122,14 +126,14 @@ function CreatePortfolioPage() {
               className="btn-cancel"
               disabled={loading}
             >
-              Avbryt
+              Cancel
             </button>
             <button
               type="submit"
               className="btn-submit"
               disabled={loading}
             >
-              {loading ? 'Skapar...' : 'Skapa portfolio'}
+              {loading ? 'Creating...' : 'Create Portfolio'}
             </button>
           </div>
         </form>

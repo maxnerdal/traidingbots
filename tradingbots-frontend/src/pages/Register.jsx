@@ -30,12 +30,12 @@ function Register() {
 
     // Validering
     if (formData.password.length < 8) {
-      setError('Lösenordet måste vara minst 8 tecken');
+      setError('Password must be at least 8 characters');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Lösenorden matchar inte');
+      setError('Passwords do not match');
       return;
     }
 
@@ -60,13 +60,13 @@ function Register() {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h1>Skapa konto</h1>
-        <p className="subtitle">Börja automatisera din trading idag</p>
+        <h1>Create Account</h1>
+        <p className="subtitle">Start automating your trading today</p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="firstName">Förnamn</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 id="firstName"
                 name="firstName"
@@ -79,7 +79,7 @@ function Register() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastName">Efternamn</label>
+              <label htmlFor="lastName">Last Name</label>
               <input
                 id="lastName"
                 name="lastName"
@@ -107,28 +107,28 @@ function Register() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Lösenord *</label>
+            <label htmlFor="password">Password *</label>
             <input
               id="password"
               name="password"
               type="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Minst 8 tecken"
+              placeholder="At least 8 characters"
               required
               autoComplete="new-password"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Bekräfta lösenord *</label>
+            <label htmlFor="confirmPassword">Confirm Password *</label>
             <input
               id="confirmPassword"
               name="confirmPassword"
               type="password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Ange lösenordet igen"
+              placeholder="Enter password again"
               required
               autoComplete="new-password"
             />
@@ -145,12 +145,12 @@ function Register() {
             className="btn-primary"
             disabled={loading}
           >
-            {loading ? 'Skapar konto...' : 'Skapa konto'}
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 
         <p className="form-footer">
-          Har du redan ett konto? <Link to="/login">Logga in här</Link>
+          Already have an account? <Link to="/login">Log in here</Link>
         </p>
       </div>
     </div>

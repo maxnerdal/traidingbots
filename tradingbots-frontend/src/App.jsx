@@ -3,7 +3,8 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import TradingBots from './pages/TradingBots';
+import Portfolio from './pages/Portfolio';
 import AddAssetPage from './pages/AddAssetPage';
 import CreatePortfolioPage from './pages/CreatePortfolioPage';
 import './App.css';
@@ -19,7 +20,7 @@ function App() {
             path="/portfolio" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Portfolio />
               </ProtectedRoute>
             } 
           />
@@ -47,10 +48,7 @@ function App() {
             path="/tradingbots" 
             element={
               <ProtectedRoute>
-                <div style={{ padding: '40px', textAlign: 'center' }}>
-                  <h1>TradingBots</h1>
-                  <p>Coming soon...</p>
-                </div>
+                <TradingBots />
               </ProtectedRoute>
             } 
           />
@@ -70,7 +68,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <div style={{ padding: '40px', textAlign: 'center' }}>
-                  <h1>Profil</h1>
+                  <h1>Profile</h1>
                   <p>Coming soon...</p>
                 </div>
               </ProtectedRoute>
@@ -81,13 +79,13 @@ function App() {
             element={
               <ProtectedRoute>
                 <div style={{ padding: '40px', textAlign: 'center' }}>
-                  <h1>Inställningar</h1>
+                  <h1>Settings</h1>
                   <p>Coming soon...</p>
                 </div>
               </ProtectedRoute>
             } 
           />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/tradingbots" replace />} />
         </Routes>
       </AuthProvider>
     </Router>

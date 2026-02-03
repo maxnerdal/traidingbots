@@ -31,8 +31,8 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Logga in</h1>
-        <p className="subtitle">Välkommen tillbaka till TradingBots</p>
+        <h1>Log In</h1>
+        <p className="subtitle">Welcome back to TradingBots</p>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -49,7 +49,7 @@ function Login() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Lösenord</label>
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -72,12 +72,12 @@ function Login() {
             className="btn-primary"
             disabled={loading}
           >
-            {loading ? 'Loggar in...' : 'Logga in'}
+            {loading ? 'Logging in...' : 'Log In'}
           </button>
         </form>
 
         <p className="form-footer">
-          Har du inget konto? <Link to="/register">Registrera dig här</Link>
+          Don't have an account? <Link to="/register">Register here</Link>
         </p>
       </div>
     </div>

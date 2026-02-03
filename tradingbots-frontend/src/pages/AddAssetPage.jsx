@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { assetService, portfolioService } from '../services/portfolioService';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
+import '../styles/SharedFormStyles.css';
 import './AddAssetPage.css';
 
 function AddAssetPage() {
@@ -47,7 +48,7 @@ function AddAssetPage() {
       const data = await assetService.getAllAssets();
       setAssets(data);
     } catch (err) {
-      setError('Kunde inte ladda tillgångar: ' + (err.response?.data?.message || err.message));
+      setError('Could not load assets: ' + (err.response?.data?.message || err.message));
     } finally {
       setLoadingAssets(false);
     }
@@ -71,15 +72,15 @@ function AddAssetPage() {
     const priceNum = parseFloat(formData.averageBuyPrice);
 
     if (!formData.assetId || isNaN(assetIdNum) || assetIdNum <= 0) {
-      setError('Välj en tillgång');
+      setError('Select an asset');
       return;
     }
     if (!formData.quantity || isNaN(quantityNum) || quantityNum <= 0) {
-      setError('Ange ett giltigt antal');
+      setError('Enter a valid quantity');
       return;
     }
     if (!formData.averageBuyPrice || isNaN(priceNum) || priceNum <= 0) {
-      setError('Ange ett giltigt snittpris');
+      setError('Enter a valid average price');
       return;
     }
 
@@ -105,7 +106,7 @@ function AddAssetPage() {
   const selectedAsset = assets.find(a => a.id === parseInt(formData.assetId));
 
   if (!portfolio) {
-    return <div className="loading-page">Laddar...</div>;
+    return <div className="loading-page">Loading...</div>;
   }
 
   return (
@@ -115,9 +116,11 @@ function AddAssetPage() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand">traidingbots</span>
+            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer'}}>traidingbots</span>
             <span className="breadcrumb-separator">/</span>
-            <span className="breadcrumb-page">Lägg till tillgång</span>
+            <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
+            <span className="breadcrumb-separator">/</span>
+            <span className="breadcrumb-page">add asset</span>
           </div>
         </div>
         <div className="header-right">
@@ -128,9 +131,9 @@ function AddAssetPage() {
       {/* Main Content */}
       <main className="add-asset-content">
         <div className="add-asset-container">
-          <h1>Lägg till ny tillgång</h1>
+          <h1>Add New Asset</h1>
           <p className="page-subtitle">
-            Lägg till en digital tillgång i portfolio "{portfolio.name}"
+            Add a digital asset to portfolio "{portfolio.name}"
           </p>
 
           <form onSubmit={handleSubmit} className="add-asset-form">
@@ -158,7 +161,7 @@ function AddAssetPage() {
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="assetId">
-                      Tillgång <span className="required">*</span>
+                      Asset <span className="required">*</span>
                     </label>
                     <select
                       id="assetId"
@@ -168,7 +171,7 @@ function AddAssetPage() {
                       className="form-select"
                       required
                     >
-                      <option value="">Välj en tillgång</option>
+                      <option value="">Select an asset</option>
                       {assets.map(asset => (
                         <option key={asset.id} value={asset.id}>
                           {asset.name} ({asset.symbol})
@@ -176,7 +179,7 @@ function AddAssetPage() {
                       ))}
                     </select>
                     <p className="form-hint">
-                      Välj vilken digital tillgång du vill lägga till
+                      Select which digital asset to add
                     </p>
                   </div>
                 </div>
@@ -187,12 +190,12 @@ function AddAssetPage() {
             <div className="form-section">
               <div className="section-number">2</div>
               <div className="section-content">
-                <h2>Detaljer</h2>
+                <h2>Details</h2>
 
                 <div className="form-row two-columns">
                   <div className="form-group">
                     <label htmlFor="quantity">
-                      Antal <span className="required">*</span>
+                      Quantity <span className="required">*</span>
                     </label>
                     <input
                       type="number"
@@ -206,12 +209,12 @@ function AddAssetPage() {
                       className="form-input"
                       required
                     />
-                    <p className="form-hint">Hur många enheter äger du?</p>
+                    <p className="form-hint">How many units do you own?</p>
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="averageBuyPrice">
-                      Snittpris (SEK) <span className="required">*</span>
+                      Average Price (SEK) <span className="required">*</span>
                     </label>
                     <input
                       type="number"
@@ -225,14 +228,14 @@ function AddAssetPage() {
                       className="form-input"
                       required
                     />
-                    <p className="form-hint">Genomsnittligt inköpspris per enhet</p>
+                    <p className="form-hint">Average purchase price per unit</p>
                   </div>
                 </div>
 
                 {selectedAsset && formData.quantity && formData.averageBuyPrice && (
                   <div className="calculation-info">
-                    <strong>Totalt värde:</strong>{' '}
-                    {new Intl.NumberFormat('sv-SE', {
+                    <strong>Total value:</strong>{' '}
+                    {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'SEK'
                     }).format(parseFloat(formData.quantity) * parseFloat(formData.averageBuyPrice))}
@@ -241,14 +244,14 @@ function AddAssetPage() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="notes">Anteckningar</label>
+                    <label htmlFor="notes">Notes</label>
                     <textarea
                       id="notes"
                       name="notes"
                       value={formData.notes}
                       onChange={handleChange}
                       rows="3"
-                      placeholder="Lägg till eventuella anteckningar..."
+                      placeholder="Add any notes..."
                       className="form-textarea"
                     />
                     <p className="form-hint">0/{formData.notes.length} characters</p>
@@ -272,14 +275,14 @@ function AddAssetPage() {
                 className="btn-cancel"
                 disabled={loading}
               >
-                Avbryt
+                Cancel
               </button>
               <button
                 type="submit"
                 className="btn-submit"
                 disabled={loading || loadingAssets}
               >
-                {loading ? 'Lägger till...' : 'Lägg till tillgång'}
+                {loading ? 'Adding...' : 'Add Asset'}
               </button>
             </div>
           </form>
