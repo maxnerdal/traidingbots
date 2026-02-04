@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+import '../styles/SharedFormStyles.css';
+import '../styles/AppearanceSettings.css';
+
+const AppearanceSettings = () => {
+  const [theme, setTheme] = useState('dark');
+  const [message, setMessage] = useState({ type: '', text: '' });
+
+  const handleThemeChange = (selectedTheme) => {
+    setTheme(selectedTheme);
+    setMessage({ type: 'info', text: 'Applying theme...' });
+    
+    // TODO: Apply theme and save to backend
+    setTimeout(() => {
+      setMessage({ type: 'success', text: 'Theme updated successfully!' });
+      setTimeout(() => setMessage({ type: '', text: '' }), 3000);
+    }, 500);
+  };
+
+  return (
+    <div>
+      <div className="page-title">
+        <h1>Theme</h1>
+        <p className="page-description">Customize how the application looks</p>
+      </div>
+
+      {message.text && (
+        <div className={`error-banner ${message.type === 'success' ? 'success-banner' : message.type === 'info' ? 'info-banner' : ''}`}>
+          {message.text}
+        </div>
+      )}
+
+      <div className="form-section">
+        <div className="section-number">1</div>
+        <div className="section-content">
+          <div className="theme-options">
+            <button
+              className={`theme-option ${theme === 'light' ? 'active' : ''}`}
+              onClick={() => handleThemeChange('light')}
+            >
+              <div className="theme-preview light-preview">
+                <div className="preview-header"></div>
+                <div className="preview-content">
+                  <div className="preview-text"></div>
+                  <div className="preview-text short"></div>
+                </div>
+              </div>
+              <div className="theme-label">
+                <span className="theme-icon">☀️</span>
+                <span>Light</span>
+              </div>
+            </button>
+
+            <button
+              className={`theme-option ${theme === 'dark' ? 'active' : ''}`}
+              onClick={() => handleThemeChange('dark')}
+            >
+              <div className="theme-preview dark-preview">
+                <div className="preview-header"></div>
+                <div className="preview-content">
+                  <div className="preview-text"></div>
+                  <div className="preview-text short"></div>
+                </div>
+              </div>
+              <div className="theme-label">
+                <span className="theme-icon">🌙</span>
+                <span>Dark</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AppearanceSettings;

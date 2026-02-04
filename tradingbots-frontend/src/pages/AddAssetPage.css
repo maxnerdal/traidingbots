@@ -1,11 +1,5 @@
 /* AddAssetPage - Page-specific styles */
 
-.add-asset-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
-}
-
 .add-asset-container h1 {
   font-size: 28px;
   font-weight: 600;
@@ -44,8 +38,8 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .add-asset-content {
-    padding: var(--spacing-md);
+  .add-asset-container h1 {
+    font-size: 24px;
   }
 }
 
@@ -90,60 +84,4 @@
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-top: var(--spacing-xs);
-}
-
-/* Calculation Info */
-.calculation-info {
-  padding: var(--spacing-md);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-/* AddAssetPage - Page-specific styles */
-
-.add-asset-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: var(--spacing-xl);
-}
-
-.add-asset-container h1 {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 var(--spacing-sm);
-}
-
-.page-subtitle {
-  color: var(--text-secondary);
-  font-size: var(--font-size-md);
-  margin-bottom: var(--spacing-xl);
-}
-
-.loading-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  font-size: var(--font-size-lg);
-  color: var(--text-secondary);
-}
-
-.add-asset-form {
-  /* No background or border - clean GitHub style */
-}
-
-.calculation-info {
-  margin-top: var(--spacing-md);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .add-asset-content {
-    padding: var(--spacing-md);
-  }
 }

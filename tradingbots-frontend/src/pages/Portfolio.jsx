@@ -131,7 +131,7 @@ function Portfolio() {
               ))}
             </select>
             <button onClick={() => navigate('/create-portfolio')} className="btn-new-portfolio">
-              Ny portfolio +
+              Create Portfolio +
             </button>
           </div>
         </div>
@@ -266,14 +266,16 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
                 <th className="text-right">1h%</th>
                 <th className="text-right">24h%</th>
                 <th className="text-right">7d%</th>
+                <th className="text-right">QTY</th>
                 <th className="text-right">Holdings</th>
                 <th className="text-right">Avg Buy Price</th>
                 <th className="text-right">Profit/Loss</th>
+                <th className="text-right"></th>
               </tr>
             </thead>
             <tbody>
               {items.map((item, index) => {
-                const currentPrice = item.digitalAsset?.currentPrice || 0;
+                const currentPrice = item.currentPrice || 0;
                 const holdings = item.quantity * currentPrice;
                 const avgBuyPrice = item.averageBuyPrice || 0;
                 const profitLoss = holdings - (item.quantity * avgBuyPrice);
@@ -281,7 +283,11 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
                 return (
                   <tr key={item.id || index}>
                     <td className="asset-cell">
-                      <div className="asset-icon">₿</div>
+                      {item.digitalAsset?.iconUrl ? (
+                        <img src={item.digitalAsset.iconUrl} alt={item.digitalAsset.symbol} className="asset-icon" />
+                      ) : (
+                        <div className="asset-icon">₿</div>
+                      )}
                       <div className="asset-info">
                         <span className="asset-name">{item.digitalAsset?.name || 'Unknown'}</span>
                         <span className="asset-symbol">{item.digitalAsset?.symbol || 'N/A'}</span>
@@ -297,10 +303,22 @@ function PortfolioSection({ portfolio, onAddAsset, onDelete }) {
                     <td className={`text-right ${getPercentageClass(item.digitalAsset?.change7d)}`}>
                       {formatPercentage(item.digitalAsset?.change7d || -11.00)}
                     </td>
+                    <td className="text-right">{formatNumber(item.quantity)}</td>
                     <td className="text-right">{formatCurrency(holdings)}</td>
                     <td className="text-right">{formatCurrency(avgBuyPrice)}</td>
                     <td className={`text-right ${getPercentageClass(profitLoss)}`}>
                       {formatCurrency(profitLoss)}
+                    </td>
+                    <td className="text-right">
+                      <button 
+                        className="btn-edit-asset" 
+                        onClick={() => window.location.href = `/edit-asset/${portfolio.id}/${item.id}`}
+                        title="Edit asset"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                        </svg>
+                      </button>
                     </td>
                   </tr>
                 );

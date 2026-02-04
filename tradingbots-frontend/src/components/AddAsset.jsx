@@ -156,7 +156,7 @@ function AddAsset({ portfolio, onClose, onSuccess }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="averageBuyPrice">Snittpris (SEK) *</label>
+            <label htmlFor="averageBuyPrice">Snittpris (USD) *</label>
             <input
               type="number"
               id="averageBuyPrice"
@@ -169,7 +169,7 @@ function AddAsset({ portfolio, onClose, onSuccess }) {
               required
               disabled={loading}
             />
-            <small>Genomsnittligt inköpspris per enhet i SEK</small>
+            <small>Genomsnittligt inköpspris per enhet i USD</small>
           </div>
 
           <div className="form-group">

@@ -1,8 +1,11 @@
 package com.tradingbots.service;
 
 import com.tradingbots.dto.CreateDigitalAssetRequest;
+import com.tradingbots.dto.coingecko.CoinMarketData;
 import com.tradingbots.entity.DigitalAsset;
 import com.tradingbots.repository.DigitalAssetRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,10 +14,14 @@ import java.util.List;
 @Service
 public class DigitalAssetService {
     
-    private final DigitalAssetRepository digitalAssetRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DigitalAssetService.class);
     
-    public DigitalAssetService(DigitalAssetRepository digitalAssetRepository) {
+    private final DigitalAssetRepository digitalAssetRepository;
+    private final CoinGeckoService coinGeckoService;
+    
+    public DigitalAssetService(DigitalAssetRepository digitalAssetRepository, CoinGeckoService coinGeckoService) {
         this.digitalAssetRepository = digitalAssetRepository;
+        this.coinGeckoService = coinGeckoService;
     }
     
     @Transactional(readOnly = true)

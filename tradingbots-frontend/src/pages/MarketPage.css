@@ -77,6 +77,18 @@
   font-size: var(--font-size-lg);
 }
 
+.table-header-info {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-sm);
+}
+
+.last-updated {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
 .market-table-container {
   background: var(--bg-primary);
   border: 1px solid var(--border-light);

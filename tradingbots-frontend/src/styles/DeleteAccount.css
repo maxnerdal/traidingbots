@@ -1,0 +1,38 @@
+/* Danger Title */
+.danger-title h1 {
+  color: var(--error-color) !important;
+}
+
+.danger-description {
+  color: var(--error-color) !important;
+  margin: 0 !important;
+  font-size: var(--font-size-sm) !important;
+}
+
+/* Reduce padding for delete account form section */
+.form-section {
+  padding: var(--spacing-md) 0;
+  padding-left: var(--spacing-lg);
+}
+
+/* Danger Button */
+.btn-danger {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--error-color);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+  background-color: #b62324;
+}
+
+.btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -72,9 +72,6 @@ function UserAvatar() {
             <div className="user-menu-email">{user?.email}</div>
           </div>
           <div className="user-menu-divider"></div>
-          <button className="user-menu-item" onClick={() => handleMenuClick('profile')}>
-            Profile
-          </button>
           <button className="user-menu-item" onClick={() => handleMenuClick('settings')}>
             Settings
           </button>

@@ -4,6 +4,7 @@ import { portfolioService } from '../services/portfolioService';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
 import '../styles/SharedFormStyles.css';
+import '../styles/SharedPageStyles.css';
 import './CreatePortfolioPage.css';
 
 function CreatePortfolioPage() {
@@ -61,7 +62,7 @@ function CreatePortfolioPage() {
         </div>
       </header>
 
-      <main className="create-portfolio-content">
+      <main className="form-page-content">
         <div className="page-title">
           <h1>Create New Portfolio</h1>
           <p className="page-description">Organize and track your crypto assets in a new portfolio</p>

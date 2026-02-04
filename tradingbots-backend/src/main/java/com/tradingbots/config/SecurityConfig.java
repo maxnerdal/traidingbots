@@ -101,6 +101,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // Public endpoints
                         .requestMatchers("/api/health").permitAll()  // Health check
                         .requestMatchers("/api/crypto/**").permitAll() // Public crypto market data
+                        .requestMatchers(HttpMethod.GET, "/api/assets/**").permitAll() // Public asset list for AddAsset dropdown
                         .anyRequest().authenticated()                // Allt annat kräver auth
                 )
                 .authenticationProvider(authenticationProvider())

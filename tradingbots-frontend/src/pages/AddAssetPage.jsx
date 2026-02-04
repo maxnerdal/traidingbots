@@ -4,6 +4,7 @@ import { assetService, portfolioService } from '../services/portfolioService';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
 import '../styles/SharedFormStyles.css';
+import '../styles/SharedPageStyles.css';
 import './AddAssetPage.css';
 
 function AddAssetPage() {
@@ -129,7 +130,7 @@ function AddAssetPage() {
       </header>
 
       {/* Main Content */}
-      <main className="add-asset-content">
+      <main className="form-page-content">
         <div className="add-asset-container">
           <h1>Add New Asset</h1>
           <p className="page-subtitle">

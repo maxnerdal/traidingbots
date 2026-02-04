@@ -52,9 +52,9 @@
 
 /* Main Content */
 .main-content {
-  max-width: 1100px;
+  max-width: 1150px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: calc(var(--spacing-xl) * 3) var(--spacing-xl) var(--spacing-xl);
 }
 
 /* Portfolio Header */
@@ -267,6 +267,12 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+/* Styling for fallback div icon */
+div.asset-icon {
   background: #f7931a;
   color: white;
   display: flex;
@@ -274,7 +280,11 @@
   justify-content: center;
   font-size: var(--font-size-md);
   font-weight: bold;
-  flex-shrink: 0;
+}
+
+/* Styling for actual img icons */
+img.asset-icon {
+  display: block;
 }
 
 .asset-info {
@@ -333,6 +343,30 @@
 
 .btn-create:hover {
   background: var(--brand-hover);
+}
+
+/* Edit Asset Button */
+.btn-edit-asset {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-edit-asset:hover {
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+}
+
+.btn-edit-asset svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* Responsive Design */

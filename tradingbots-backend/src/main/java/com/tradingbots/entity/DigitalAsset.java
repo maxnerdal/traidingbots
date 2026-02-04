@@ -20,6 +20,9 @@ public class DigitalAsset {
     @Column(name = "coingecko_id", length = 100)
     private String coingeckoId; // For API integration later
     
+    @Column(name = "icon_url", length = 255)
+    private String iconUrl; // Icon/logo URL from CoinGecko
+    
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
@@ -77,6 +80,14 @@ public class DigitalAsset {
     
     public void setCoingeckoId(String coingeckoId) {
         this.coingeckoId = coingeckoId;
+    }
+    
+    public String getIconUrl() {
+        return iconUrl;
+    }
+    
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
     
     public LocalDateTime getCreatedAt() {

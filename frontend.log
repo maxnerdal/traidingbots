@@ -3,7 +3,44 @@
 > vite
 
 
-  VITE v7.3.1  ready in 729 ms
+  VITE v7.3.1  ready in 659 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
+4:53:20 PM [vite] (client) hmr update /src/pages/Portfolio.css
+4:53:21 PM [vite] (client) hmr update /src/pages/Portfolio.css
+4:56:27 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+4:56:33 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+4:56:37 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+4:57:29 PM [vite] (client) hmr update /src/pages/Portfolio.css
+4:57:34 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+4:57:34 PM [vite] (client) hmr update /src/pages/Portfolio.css
+4:58:58 PM [vite] (client) hmr update /src/App.jsx
+4:59:01 PM [vite] (client) hmr update /src/App.jsx
+4:59:02 PM [vite] (client) hmr update /src/App.jsx
+4:59:02 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+4:59:39 PM [vite] (client) hmr update /src/styles/SharedFormStyles.css
+4:59:40 PM [vite] (client) hmr update /src/styles/SharedFormStyles.css
+5:31:58 PM [vite] (client) hmr update /src/pages/Portfolio.css
+5:31:58 PM [vite] (client) hmr update /src/pages/AddAssetPage.jsx
+5:31:58 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+5:32:02 PM [vite] (client) hmr update /src/pages/AddAssetPage.jsx
+5:32:02 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+5:32:02 PM [vite] (client) hmr update /src/pages/Portfolio.css
+5:32:02 PM [vite] (client) hmr update /src/styles/SharedPageStyles.css
+5:35:47 PM [vite] (client) hmr update /src/pages/AddAssetPage.css
+5:37:17 PM [vite] (client) hmr update /src/pages/AddAssetPage.css
+5:41:20 PM [vite] (client) hmr update /src/pages/AddAssetPage.css
+5:41:51 PM [vite] (client) hmr update /src/pages/AddAssetPage.css
+5:42:54 PM [vite] (client) hmr update /src/pages/AddAssetPage.css
+5:53:18 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+5:53:27 PM [vite] (client) hmr update /src/pages/Portfolio.jsx
+5:55:31 PM [vite] (client) hmr update /src/styles/SharedPageStyles.css
+6:00:25 PM [vite] (client) hmr update /src/pages/CreatePortfolioPage.jsx
+6:00:39 PM [vite] (client) hmr update /src/pages/CreatePortfolioPage.jsx
+6:02:49 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+6:02:50 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+6:04:16 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+6:04:19 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+6:05:18 PM [vite] (client) hmr update /src/pages/EditAsset.jsx
+6:05:47 PM [vite] (client) hmr update /src/pages/EditAsset.jsx

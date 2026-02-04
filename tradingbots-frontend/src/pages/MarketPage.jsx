@@ -12,6 +12,8 @@ const MarketPage = () => {
   const [error, setError] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredCryptos, setFilteredCryptos] = useState([]);
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [timeAgo, setTimeAgo] = useState('');
 
   useEffect(() => {
     loadMarketData();
@@ -29,6 +31,33 @@ const MarketPage = () => {
     }
   }, [searchQuery, cryptos]);
 
+  useEffect(() => {
+    const updateTimeAgo = () => {
+      if (!lastUpdated) return;
+      
+      const now = new Date();
+      const diff = Math.floor((now - lastUpdated) / 1000); // difference in seconds
+      
+      if (diff < 60) {
+        setTimeAgo(`${diff} sec ago`);
+      } else if (diff < 3600) {
+        const mins = Math.floor(diff / 60);
+        setTimeAgo(`${mins} min ago`);
+      } else if (diff < 86400) {
+        const hours = Math.floor(diff / 3600);
+        setTimeAgo(`${hours} hour${hours > 1 ? 's' : ''} ago`);
+      } else {
+        const days = Math.floor(diff / 86400);
+        setTimeAgo(`${days} day${days > 1 ? 's' : ''} ago`);
+      }
+    };
+
+    updateTimeAgo();
+    const interval = setInterval(updateTimeAgo, 10000); // Update every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [lastUpdated]);
+
   const loadMarketData = async () => {
     try {
       setLoading(true);
@@ -37,6 +66,7 @@ const MarketPage = () => {
       console.log('Received data:', data);
       setCryptos(data);
       setFilteredCryptos(data);
+      setLastUpdated(new Date());
     } catch (err) {
       console.error('Error loading market data:', err);
       setError('Failed to load market data. Please try again later.');
@@ -124,8 +154,16 @@ const MarketPage = () => {
         {loading ? (
           <div className="loading-state">Loading market data...</div>
         ) : (
-          <div className="market-table-container">
-            <table className="market-table">
+          <>
+            <div className="table-header-info">
+              {lastUpdated && timeAgo && (
+                <div className="last-updated">
+                  Last updated today {timeAgo}
+                </div>
+              )}
+            </div>
+            <div className="market-table-container">
+              <table className="market-table">
               <thead>
                 <tr>
                   <th className="text-left">#</th>
@@ -170,6 +208,7 @@ const MarketPage = () => {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </main>
     </div>

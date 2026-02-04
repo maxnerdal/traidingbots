@@ -57,10 +57,10 @@ public class PortfolioController {
     // Portfolio Items endpoints
     
     @GetMapping("/{portfolioId}/items")
-    public ResponseEntity<List<PortfolioItem>> getPortfolioItems(
+    public ResponseEntity<List<com.tradingbots.dto.PortfolioItemWithPriceResponse>> getPortfolioItems(
             @PathVariable Long portfolioId,
             @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(portfolioService.getPortfolioItems(portfolioId, user.getId()));
+        return ResponseEntity.ok(portfolioService.getPortfolioItemsWithPrices(portfolioId, user.getId()));
     }
     
     @PostMapping("/{portfolioId}/items")
