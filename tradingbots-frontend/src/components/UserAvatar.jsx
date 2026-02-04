@@ -16,7 +16,7 @@ function UserAvatar() {
     const lastName = user.lastName || '';
     
     if (firstName && lastName) {
-      return `${firstName[0]}${lastName[0]}`.toUpperCase();
+      return `${firstName[0]}.${lastName[0]}`.toUpperCase();
     } else if (user.email) {
       return user.email[0].toUpperCase();
     }

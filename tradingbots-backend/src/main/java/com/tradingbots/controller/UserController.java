@@ -1,5 +1,6 @@
 package com.tradingbots.controller;
 
+import com.tradingbots.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,8 +28,13 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
+        // Principal är User entity som sattes i JwtRequestFilter
+        User user = (User) authentication.getPrincipal();
+        
         Map<String, Object> response = new HashMap<>();
-        response.put("email", authentication.getName());
+        response.put("email", user.getEmail());
+        response.put("firstName", user.getFirstName());
+        response.put("lastName", user.getLastName());
         response.put("authorities", authentication.getAuthorities());
         response.put("authenticated", authentication.isAuthenticated());
         

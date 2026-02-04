@@ -10,41 +10,42 @@
 ### 0. Hamburger-meny & Sidomeny
 
 #### 0.1 HamburgerMenu Komponent
-- [ ] Skapa hamburger-ikon (☰) komponent
+- [x] Skapa hamburger-ikon (☰) komponent
   - 3 horisontella streck
   - Placera i övre vänstra hörnet
   - Animation vid klick (streck → X)
   - Alltid synlig för alla skärmstorlekar
 
 #### 0.2 SideMenu Komponent
-- [ ] Skapa slide-in sidomeny
+- [x] Skapa slide-in sidomeny
   - Öppnas från vänster
   - Menyval: TradingBots, Portfolio, Markets
   - Smooth slide-in/out animation
   - Ikoner för varje menyval (valfritt)
 
 #### 0.3 Overlay
-- [ ] Implementera mörk overlay
+- [x] Implementera mörk overlay
   - Visas när menyn är öppen
   - Semi-transparent bakgrund
   - Stäng meny vid klick på overlay
   - Fade in/out animation
 
 #### 0.4 Nya Sidor
-- [ ] Skapa TradingBots-sida (tom för nu)
+- [x] Skapa TradingBots-sida (tom för nu)
   - React Router route: /tradingbots
   - Placeholder: "TradingBots - Coming soon"
   
-- [ ] Skapa Markets-sida (tom för nu)
+- [x] Skapa Markets-sida (MarketPage med CoinGecko API)
   - React Router route: /markets
-  - Placeholder: "Markets - Coming soon"
+  - Visar top 100 kryptovalutor
+  - Sorterings- och sökmöjligheter
 
-- [ ] Uppdatera routing
+- [x] Uppdatera routing
   - /dashboard → /portfolio (nuvarande Dashboard)
   - Lägg till /tradingbots och /markets routes
 
 #### 0.5 Integration
-- [ ] Integrera HamburgerMenu i huvudlayout
+- [x] Integrera HamburgerMenu i huvudlayout
   - Hamburger till vänster ☰
   - UserAvatar till höger 👤
   - Fungerar på alla sidor
@@ -56,14 +57,14 @@
 ### 1. UI Komponenter (Frontend)
 
 #### 1.1 UserAvatar Komponent
-- [ ] Skapa UserAvatar komponent (cirkel med initialer)
+- [x] Skapa UserAvatar komponent (cirkel med initialer)
   - Hämta firstName + lastName från user
   - Visa första bokstaven från varje (t.ex. "MN")
   - Cirkulär design med appens färgschema
   - Responsiv storlek
 
 #### 1.2 UserMenu Dropdown
-- [ ] Skapa UserMenu komponent med dropdown
+- [x] Skapa UserMenu komponent med dropdown
   - Klickbar UserAvatar som öppnar meny
   - Dropdown-meny med 3 alternativ:
     - Profil
@@ -73,13 +74,13 @@
   - Smooth animation (fade in/out)
 
 #### 1.3 Integration
-- [ ] Integrera UserMenu i Dashboard/huvudlayout
+- [x] Integrera UserMenu i Dashboard/huvudlayout
   - Placera i övre högra hörnet
   - Visa alltid när användare är inloggad
   - Responsiv placering (mobil + desktop)
 
 #### 1.4 Cleanup
-- [ ] Ta bort "Inloggad som: {user}" text från Dashboard
+- [x] Ta bort "Inloggad som: {user}" text från Dashboard
   - Ersätts av UserAvatar i övre högra hörnet
 
 ---
