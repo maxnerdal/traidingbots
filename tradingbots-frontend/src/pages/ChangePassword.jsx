@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { userService } from '../services/userService';
 import '../styles/SharedFormStyles.css';
 import '../styles/PasswordInput.css';
 
@@ -43,15 +44,21 @@ const ChangePassword = () => {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await userService.changePassword({
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword
+      });
       setMessage({ type: 'success', text: 'Password changed successfully!' });
       setFormData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       });
-    }, 1000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to change password. Please try again.';
+      setMessage({ type: 'error', text: errorMessage });
+    }
   };
 
   return (

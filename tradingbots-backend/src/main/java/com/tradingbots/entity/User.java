@@ -5,7 +5,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,6 +43,12 @@ public class User {
     
     @Column(nullable = false)
     private boolean enabled = true;
+    
+    @Column(length = 20)
+    private String theme = "dark"; // User's preferred theme
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Portfolio> portfolios = new ArrayList<>();
     
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -134,6 +142,14 @@ public class User {
     
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    
+    public String getTheme() {
+        return theme;
+    }
+    
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
     
     /**

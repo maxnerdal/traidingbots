@@ -15,7 +15,7 @@ public class Portfolio {
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_portfolio_user", foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"))
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "portfolios", "password"})
     private User user;
     

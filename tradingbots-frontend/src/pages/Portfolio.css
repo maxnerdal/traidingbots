@@ -78,6 +78,15 @@
   margin: 0;
 }
 
+.portfolio-total-value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin-left: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  border-left: 2px solid var(--border-light);
+}
+
 .portfolio-title svg {
   color: var(--text-secondary);
 }

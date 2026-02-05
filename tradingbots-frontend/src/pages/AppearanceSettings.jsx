@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { userService } from '../services/userService';
 import '../styles/SharedFormStyles.css';
 import '../styles/AppearanceSettings.css';
 
@@ -6,15 +7,20 @@ const AppearanceSettings = () => {
   const [theme, setTheme] = useState('dark');
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  const handleThemeChange = (selectedTheme) => {
+  const handleThemeChange = async (selectedTheme) => {
     setTheme(selectedTheme);
     setMessage({ type: 'info', text: 'Applying theme...' });
     
-    // TODO: Apply theme and save to backend
-    setTimeout(() => {
+    try {
+      await userService.updateTheme(selectedTheme);
+      // Apply theme to document
+      document.documentElement.setAttribute('data-theme', selectedTheme);
       setMessage({ type: 'success', text: 'Theme updated successfully!' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
-    }, 500);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to update theme. Please try again.';
+      setMessage({ type: 'error', text: errorMessage });
+    }
   };
 
   return (

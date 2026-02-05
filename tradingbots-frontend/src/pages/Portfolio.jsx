@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../components/HamburgerMenu';
@@ -89,6 +89,30 @@ function Portfolio() {
     ? getAllItems()
     : getItemsForPortfolio(selectedPortfolio);
 
+  // Calculate total portfolio value using useMemo to prevent infinite loops
+  const totalValue = useMemo(() => {
+    if (selectedPortfolio === 'all') {
+      return portfolios.reduce((total, portfolio) => {
+        const portfolioValue = portfolio.items?.reduce((sum, item) => {
+          return sum + (item.quantity * item.currentPrice || 0);
+        }, 0) || 0;
+        return total + portfolioValue;
+      }, 0);
+    } else {
+      const portfolio = portfolios.find(p => p.id === parseInt(selectedPortfolio));
+      return portfolio?.items?.reduce((sum, item) => {
+        return sum + (item.quantity * item.currentPrice || 0);
+      }, 0) || 0;
+    }
+  }, [portfolios, selectedPortfolio]);
+
+  const formatCurrency = (num) => {
+    return '$' + new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
+
   return (
     <div className="page-container">
       {/* Top Navigation */}
@@ -118,6 +142,9 @@ function Portfolio() {
               <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
             </svg>
             <h1>Portfolio</h1>
+            <div className="portfolio-total-value">
+              {formatCurrency(totalValue)}
+            </div>
           </div>
           <div className="portfolio-actions">
             <select 

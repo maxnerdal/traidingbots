@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { userService } from '../services/userService';
 import '../styles/SharedFormStyles.css';
 
 const PersonalInfo = () => {
@@ -33,11 +34,17 @@ const PersonalInfo = () => {
     e.preventDefault();
     setMessage({ type: '', text: '' });
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await userService.updateProfile({
+        firstName: formData.firstName,
+        lastName: formData.lastName
+      });
       setMessage({ type: 'success', text: 'Personal information updated successfully!' });
       setIsEditing(false);
-    }, 1000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to update profile. Please try again.';
+      setMessage({ type: 'error', text: errorMessage });
+    }
   };
 
   return (

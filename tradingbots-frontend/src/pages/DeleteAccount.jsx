@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { userService } from '../services/userService';
 import '../styles/SharedFormStyles.css';
 import '../styles/DeleteAccount.css';
 
@@ -11,13 +12,20 @@ const DeleteAccount = () => {
     e.preventDefault();
     setMessage({ type: '', text: '' });
 
-    // Simulate API call
-    setTimeout(() => {
-      setMessage({ type: 'info', text: 'Account deletion initiated. You will be logged out...' });
+    if (!window.confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      await userService.deleteAccount();
+      setMessage({ type: 'info', text: 'Account deleted successfully. You will be logged out...' });
       setTimeout(() => {
         logout();
       }, 2000);
-    }, 1000);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || 'Failed to delete account. Please try again.';
+      setMessage({ type: 'error', text: errorMessage });
+    }
   };
 
   return (
