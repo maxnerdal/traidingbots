@@ -45,7 +45,7 @@ public class User {
     private boolean enabled = true;
     
     @Column(length = 20)
-    private String theme = "dark"; // User's preferred theme
+    private String theme = "light"; // User's preferred theme
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Portfolio> portfolios = new ArrayList<>();

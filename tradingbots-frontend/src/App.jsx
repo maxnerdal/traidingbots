@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -17,6 +18,12 @@ import AppearanceSettings from './pages/AppearanceSettings';
 import './App.css';
 
 function App() {
+  // Apply saved theme on app load
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
   return (
     <Router>
       <AuthProvider>

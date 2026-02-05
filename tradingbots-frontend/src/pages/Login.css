@@ -17,8 +17,17 @@
   max-width: 400px;
 }
 
+.brand-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #667eea;
+  text-align: center;
+  margin-bottom: 32px;
+  letter-spacing: -0.5px;
+}
+
 .login-card h1 {
-  margin: 0 0 8px 0;
+  margin: 0 0 24px 0;
   color: #333;
   font-size: 28px;
 }
@@ -84,6 +93,32 @@
 }
 
 .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-demo {
+  width: 100%;
+  padding: 14px;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 12px;
+}
+
+.btn-demo:hover:not(:disabled) {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-demo:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }

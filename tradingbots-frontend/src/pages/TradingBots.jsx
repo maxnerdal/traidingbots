@@ -1,10 +1,12 @@
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import HamburgerMenu from '../components/HamburgerMenu';
 import UserAvatar from '../components/UserAvatar';
 import './TradingBots.css';
 
 function TradingBots() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div className="page-container">
@@ -29,7 +31,7 @@ function TradingBots() {
         </div>
 
         <div className="features-grid">
-          <div className="feature-card">
+          <div className="feature-card" onClick={() => navigate('/portfolio')}>
             <div className="feature-icon">📊</div>
             <h3>Portfolio Management</h3>
             <p>Manage and track your crypto assets in one place</p>
@@ -38,10 +40,11 @@ function TradingBots() {
           <div className="feature-card">
             <div className="feature-icon">🤖</div>
             <h3>Trading Bots</h3>
+            <p className="coming-soon">COMING SOON</p>
             <p>Automate your trading with intelligent bots</p>
           </div>
 
-          <div className="feature-card">
+          <div className="feature-card" onClick={() => navigate('/markets')}>
             <div className="feature-icon">📈</div>
             <h3>Markets</h3>
             <p>Follow the market in real-time and find opportunities</p>

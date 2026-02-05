@@ -28,11 +28,27 @@ function Login() {
     setLoading(false);
   };
 
+  const handleDemoLogin = async () => {
+    setEmail('support@traidingbots.com');
+    setPassword('qwerty123');
+    setError('');
+    setLoading(true);
+
+    const result = await login('support@traidingbots.com', 'qwerty123');
+    
+    if (result.success) {
+      navigate('/tradingbots');
+    } else {
+      setError(result.error);
+    }
+    
+    setLoading(false);
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Log In</h1>
-        <p className="subtitle">Welcome back to TradingBots</p>
+        <div className="brand-title">traidingbots</div>
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -73,6 +89,15 @@ function Login() {
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Log In'}
+          </button>
+
+          <button 
+            type="button" 
+            className="btn-demo"
+            onClick={handleDemoLogin}
+            disabled={loading}
+          >
+            Quick Login with Demo User
           </button>
         </form>
 

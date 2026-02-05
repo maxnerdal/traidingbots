@@ -37,15 +37,15 @@
 }
 
 .success-banner {
-  background: rgba(46, 160, 67, 0.1);
-  border: 1px solid var(--success-color);
-  color: var(--success-color);
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #15803d;
 }
 
 .info-banner {
-  background: rgba(56, 139, 253, 0.1);
-  border: 1px solid var(--accent-primary);
-  color: var(--accent-primary);
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+  color: #1e40af;
 }
 
 /* Form Section with left border */

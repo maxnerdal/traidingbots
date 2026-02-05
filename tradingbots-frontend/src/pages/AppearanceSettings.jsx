@@ -4,7 +4,7 @@ import '../styles/SharedFormStyles.css';
 import '../styles/AppearanceSettings.css';
 
 const AppearanceSettings = () => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const handleThemeChange = async (selectedTheme) => {
@@ -13,8 +13,9 @@ const AppearanceSettings = () => {
     
     try {
       await userService.updateTheme(selectedTheme);
-      // Apply theme to document
+      // Apply theme to document and save to localStorage
       document.documentElement.setAttribute('data-theme', selectedTheme);
+      localStorage.setItem('theme', selectedTheme);
       setMessage({ type: 'success', text: 'Theme updated successfully!' });
       setTimeout(() => setMessage({ type: '', text: '' }), 3000);
     } catch (error) {
