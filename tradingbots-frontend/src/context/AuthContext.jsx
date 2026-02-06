@@ -1,6 +1,8 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api';
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -26,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserInfo = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/user/me');
+      const response = await axios.get(`${API_URL}/user/me`);
       setUser(response.data);
     } catch (error) {
       console.error('Failed to fetch user info:', error);
@@ -39,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password
       });
@@ -60,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, firstName, lastName) => {
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/register', {
+      const response = await axios.post(`${API_URL}/auth/register`, {
         email,
         password,
         firstName,

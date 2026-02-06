@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/crypto';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api';
+const API_URL = `${API_BASE_URL}/crypto`;
 
 // Axios instance for crypto market data (no auth required)
 const cryptoApi = axios.create({
