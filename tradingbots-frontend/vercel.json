@@ -1,0 +1,10 @@
+{
+  "env": {
+    "VITE_API_URL": "https://traidingbots-production.up.railway.app/api"
+  },
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://traidingbots-production.up.railway.app/api"
+    }
+  }
+}
