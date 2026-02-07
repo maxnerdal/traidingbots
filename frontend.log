@@ -91,3 +91,11 @@
 10:52:14 AM [vite] (client) hmr update /src/pages/Portfolio.jsx
 10:52:14 AM [vite] (client) hmr update /src/components/HamburgerMenu.jsx
 10:52:14 AM [vite] (client) hmr update /src/pages/CreatePortfolioPage.jsx
+12:42:38 PM [vite] vite.config.js changed, restarting server...
+12:42:38 PM [vite] (client) hmr update /src/context/AuthContext.jsx
+12:42:38 PM [vite] (client) hmr update /src/pages/Portfolio.jsx, /src/pages/AddAssetPage.jsx, /src/pages/CreatePortfolioPage.jsx, /src/pages/EditAsset.jsx
+12:42:38 PM [vite] (client) hmr update /src/pages/MarketPage.jsx
+12:42:38 PM [vite] (client) hmr update /src/pages/PersonalInfo.jsx, /src/pages/DeleteAccount.jsx, /src/pages/ChangePassword.jsx, /src/pages/AppearanceSettings.jsx
+12:42:39 PM [vite] server restarted.
+12:42:50 PM [vite] vite.config.js changed, restarting server...
+12:42:50 PM [vite] server restarted.

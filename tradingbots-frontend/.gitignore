@@ -24,13 +24,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Local development files with localhost configurations
-# ⚠️ These files have been modified for local development only
-# They contain http://localhost:8080/api URLs instead of production URLs
-# DO NOT commit these files - they must be manually updated before production deployment
-vite.config.js
-src/context/AuthContext.jsx
-src/services/portfolioService.js
-src/services/cryptoMarketService.js
-src/services/userService.js
