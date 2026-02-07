@@ -133,10 +133,13 @@ function EditAsset() {
           <div className="header-left">
             <HamburgerMenu />
             <div className="breadcrumb">
-              <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'}}>
-                <img src="/logo.png" alt="Logo" style={{height: '32px', objectFit: 'contain'}} />
-                traidingbots
-              </span>
+              <img 
+                src="/logo_light_mode.png" 
+                alt="TraidingBots" 
+                className="breadcrumb-logo"
+                onClick={() => navigate('/tradingbots')} 
+                style={{height: '40px', cursor: 'pointer', objectFit: 'contain', transform: 'translateY(1px)'}} 
+              />
               <span className="breadcrumb-separator">/</span>
               <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
               <span className="breadcrumb-separator">/</span>
@@ -163,10 +166,13 @@ function EditAsset() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand" onClick={() => navigate('/tradingbots')} style={{cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px'}}>
-              <img src="/logo.png" alt="Logo" style={{height: '32px', objectFit: 'contain'}} />
-              traidingbots
-            </span>
+            <img 
+              src="/logo_light_mode.png" 
+              alt="TraidingBots" 
+              className="breadcrumb-logo"
+              onClick={() => navigate('/tradingbots')} 
+              style={{height: '40px', cursor: 'pointer', objectFit: 'contain', transform: 'translateY(1px)'}} 
+            />
             <span className="breadcrumb-separator">/</span>
             <span className="breadcrumb-page" onClick={() => navigate('/portfolio')} style={{cursor: 'pointer'}}>portfolio</span>
             <span className="breadcrumb-separator">/</span>

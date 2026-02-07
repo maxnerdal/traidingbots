@@ -5,6 +5,113 @@
 
 ---
 
+## 🚨⚠️ CRITICAL - LOCAL DEVELOPMENT FILES ⚠️🚨
+
+### ⛔ THESE FILES ARE IN .gitignore - DO NOT COMMIT ⛔
+These files contain localhost API configurations for local development:
+- `/tradingbots-frontend/vite.config.js`
+- `/tradingbots-frontend/src/context/AuthContext.jsx`
+- `/tradingbots-frontend/src/services/portfolioService.js`
+- `/tradingbots-frontend/src/services/cryptoMarketService.js`
+- `/tradingbots-frontend/src/services/userService.js`
+
+**⚠️ WARNING:** These files have been modified for localhost development and are now in `.gitignore`
+- They will NOT be tracked by git
+- Changes to these files will NOT be committed
+- Before deploying, you MUST manually update them with production URLs
+- Keep backup copies if needed
+
+**🔄 STEP-BY-STEP: Restore for Production Deployment**
+
+1. **Remove from .gitignore:**
+   - Open `/tradingbots-frontend/.gitignore`
+   - Delete these lines at the bottom:
+     ```
+     # Local development files with localhost configurations
+     # ⚠️ These files have been modified for local development only
+     # They contain http://localhost:8080/api URLs instead of production URLs
+     # DO NOT commit these files - they must be manually updated before production deployment
+     vite.config.js
+     src/context/AuthContext.jsx
+     src/services/portfolioService.js
+     src/services/cryptoMarketService.js
+     src/services/userService.js
+     ```
+
+2. **Update API URLs to Production:**
+   In each of these 4 files, find the API_URL line and change it:
+   - `tradingbots-frontend/src/context/AuthContext.jsx` (line ~7)
+   - `tradingbots-frontend/src/services/portfolioService.js` (line ~3)
+   - `tradingbots-frontend/src/services/cryptoMarketService.js` (line ~3)
+   - `tradingbots-frontend/src/services/userService.js` (line ~3)
+   
+   **In ALL 4 files above, change from:**
+   ```javascript
+   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+   ```
+   **To:**
+   ```javascript
+   const API_URL = import.meta.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api';
+   ```
+
+3. **Re-add define block to vite.config.js:**
+   Open `tradingbots-frontend/vite.config.js` and add this inside the config object:
+   ```javascript
+   export default defineConfig({
+     plugins: [react()],
+     define: {
+       'import.meta.env.VITE_API_URL': JSON.stringify(
+         process.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api'
+       )
+     },
+     server: {
+       port: 5173
+     }
+   })
+   ```
+
+4. **Stage and commit the files:**
+   ```bash
+   git add tradingbots-frontend/vite.config.js
+   git add tradingbots-frontend/.gitignore
+   git add tradingbots-frontend/src/context/AuthContext.jsx
+   git add tradingbots-frontend/src/services/portfolioService.js
+   git add tradingbots-frontend/src/services/cryptoMarketService.js
+   git add tradingbots-frontend/src/services/userService.js
+   git commit -m "Restore production API configuration"
+   git push
+   ```
+
+5. **Verify on Vercel:**
+   - Check that build succeeds
+   - Test that API calls work in production
+
+---
+
+## ⚠️ DEPLOYMENT NOTES
+
+### Before Next Production Deployment
+- [ ] **IMPORTANT:** Revert API fallback URLs to production in these 4 files:
+  - `/tradingbots-frontend/src/context/AuthContext.jsx`
+  - `/tradingbots-frontend/src/services/portfolioService.js`
+  - `/tradingbots-frontend/src/services/cryptoMarketService.js`
+  - `/tradingbots-frontend/src/services/userService.js`
+  - Change fallback from `http://localhost:8080/api` to `https://traidingbots-production.up.railway.app/api`
+  - This ensures production builds work without environment variables
+
+- [ ] **IMPORTANT:** Re-add define block to `/tradingbots-frontend/vite.config.js`:
+  ```javascript
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify(
+      process.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api'
+    )
+  }
+  ```
+  - Add this inside the exported config object
+  - This was removed to allow local development with .env.local
+  
+---
+
 ## 📋 Navigation & Layout
 
 ### 0. Hamburger-meny & Sidomeny

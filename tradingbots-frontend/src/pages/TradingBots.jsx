@@ -15,7 +15,13 @@ function TradingBots() {
         <div className="header-left">
           <HamburgerMenu />
           <div className="breadcrumb">
-            <span className="breadcrumb-brand">traidingbots</span>
+            <img 
+              src="/logo_light_mode.png" 
+              alt="TraidingBots" 
+              className="breadcrumb-logo"
+              onClick={() => navigate('/tradingbots')} 
+              style={{height: '40px', cursor: 'pointer', objectFit: 'contain', transform: 'translateY(1px)'}} 
+            />
           </div>
         </div>
         <div className="header-right">
@@ -26,7 +32,7 @@ function TradingBots() {
       {/* Main Content */}
       <main className="main-content">
         <div className="welcome-section">
-          <h1>Welcome to TradingBots</h1>
+          <h1>Welcome to TraidingBots</h1>
           <p className="subtitle">Your platform for crypto trading and portfolio management</p>
         </div>
 

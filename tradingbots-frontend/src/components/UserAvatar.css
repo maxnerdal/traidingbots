@@ -6,8 +6,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--text-primary);
-  color: var(--bg-primary);
+  background: var(--brand-primary);
+  color: #ffffff;
   border: none;
   cursor: pointer;
   display: flex;
@@ -15,11 +15,11 @@
   justify-content: center;
   font-weight: 600;
   font-size: var(--font-size-sm);
-  transition: opacity 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .user-avatar:hover {
-  opacity: 0.8;
+  background: var(--brand-hover);
 }
 
 .avatar-initials {

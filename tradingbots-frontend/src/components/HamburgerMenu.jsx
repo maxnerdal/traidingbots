@@ -21,7 +21,7 @@ function HamburgerMenu() {
   };
 
   const menuItems = [
-    { label: 'TradingBots', path: '/tradingbots' },
+    { label: 'TraidingBots', path: '/tradingbots' },
     { label: 'Portfolio', path: '/portfolio' },
     { label: 'Markets', path: '/markets' },
   ];

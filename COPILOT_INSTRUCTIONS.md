@@ -5,6 +5,40 @@
 
 ---
 
+## 🚨 CRITICAL - LOCAL DEVELOPMENT FILES 🚨
+
+### ⛔ LOCALHOST CONFIGURATION - DO NOT COMMIT ⛔
+
+**WARNING:** The following files are configured for local development and are in `.gitignore`:
+
+- `/tradingbots-frontend/vite.config.js`
+- `/tradingbots-frontend/src/context/AuthContext.jsx`
+- `/tradingbots-frontend/src/services/portfolioService.js`
+- `/tradingbots-frontend/src/services/cryptoMarketService.js`
+- `/tradingbots-frontend/src/services/userService.js`
+
+**These files contain:**
+- API URL fallbacks set to `http://localhost:8080/api` instead of production URLs
+- Modified `vite.config.js` without the `define` block
+- Modified `.gitignore` to exclude themselves from version control
+
+**⚠️ BEFORE PRODUCTION DEPLOYMENT:**
+1. Remove these files from `.gitignore`
+2. Change all API fallbacks from `http://localhost:8080/api` to `https://traidingbots-production.up.railway.app/api`
+3. Re-add the `define` block to `vite.config.js`:
+   ```javascript
+   define: {
+     'import.meta.env.VITE_API_URL': JSON.stringify(
+       process.env.VITE_API_URL || 'https://traidingbots-production.up.railway.app/api'
+     )
+   }
+   ```
+4. Commit and deploy
+
+**WHY:** This setup allows local development without `.env.local` file while preventing accidental commits of localhost configuration to production.
+
+---
+
 ## 🎯 Arbetsprinciper
 
 ### 1. **Utforska ALLTID före åtgärd**
